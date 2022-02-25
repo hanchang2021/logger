@@ -2,11 +2,10 @@ from logger_init import logger_init
 
 import sys, os, functools, inspect, traceback
 
-def loggit(log_args: bool=True, log_time: bool=False):
+def loggit(log_args: bool=False, log_res: bool=False, log_time: bool=False):
     def decorator(function):
         @functools.wraps(function)
         def wrapper(*args, **kwargs):
-            # py_file_caller = inspect.getframeinfo(inspect.stack()[1][0])
             func_file = function.__code__.co_filename
             extra_args = {
                 "func_name_override": function.__name__,
@@ -31,12 +30,16 @@ def loggit(log_args: bool=True, log_time: bool=False):
                         function.__name__, arg, args_dict[arg]), 
                         extra=extra_args
                     )
+
+            if log_time:
+                pass
+
             
             try:
-                function(*args, **kwargs)
+                res = function(*args, **kwargs)
             except Exception as e:
                 logger.error(
-                    "Function {} raises an error: {}".format(function.__name__, e),
+                    "[{}] Function raises an error: {}".format(function.__name__, e),
                     extra=extra_args
                 )
                 for i, arg in enumerate(args_dict.keys()):
@@ -48,5 +51,14 @@ def loggit(log_args: bool=True, log_time: bool=False):
                     traceback.format_exc(),
                     extra=extra_args
                 )
+
+            if log_res:
+                logger.info(
+                    "[{}] Function returns {}".format(function.__name__, str(res)),
+                    extra=extra_args
+                )
+
+            if log_time:
+                pass
         return wrapper
     return decorator

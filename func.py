@@ -1,6 +1,6 @@
 from loggit import loggit
 
-@loggit()
+@loggit(log_res=True)
 def plus(a, b):
     return a + b
 
