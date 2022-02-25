@@ -6,10 +6,11 @@ def loggit(log_args: bool=True, log_time: bool=False):
     def decorator(function):
         @functools.wraps(function)
         def wrapper(*args, **kwargs):
-            py_file_caller = inspect.getframeinfo(inspect.stack()[1][0])
+            # py_file_caller = inspect.getframeinfo(inspect.stack()[1][0])
+            func_file = function.__code__.co_filename
             extra_args = {
                 "func_name_override": function.__name__,
-                "file_name_override": os.path.basename(py_file_caller.filename)
+                "file_name_override": os.path.basename(func_file)
             }
             logger = logger_init()
             
