@@ -34,9 +34,12 @@ def logger_init(name: str=None, logdir: str=".", level=logging.INFO):
       A logger
     """
     if name is not None:
-        logger = logging.getLogger(name)
+        logger = logging.getLogger("{}_{}".format(name, level))
     else:
-        logger = logging.getLogger()
+        logger = logging.getLogger("_{}".format(level))
+
+    if logger.hasHandlers():
+        return logger
     
     strfmt = '[%(asctime)s][%(levelname)s][%(filename)s]%(message)s'
     datefmt = '%Y-%m-%d %H:%M:%S'
