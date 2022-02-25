@@ -32,9 +32,13 @@ def loggit(log_args: bool=False, log_res: bool=False, log_time: bool=False):
                     )
 
             if log_time:
-                pass
-
-            
+                import time
+                start_time = time.time()
+                logger.info(
+                    "[{}][time-start]".format(function.__name__), 
+                    extra=extra_args
+                )
+    
             try:
                 res = function(*args, **kwargs)
             except Exception as e:
@@ -59,6 +63,14 @@ def loggit(log_args: bool=False, log_res: bool=False, log_time: bool=False):
                 )
 
             if log_time:
-                pass
+                end_time = time.time()
+                logger.info(
+                    "[{}][time-end]".format(function.__name__), 
+                    extra=extra_args
+                )
+                logger.info(
+                    "[{}][time-cost] {:.3f}s".format(function.__name__, end_time - start_time), extra=extra_args
+                )
+
         return wrapper
     return decorator
