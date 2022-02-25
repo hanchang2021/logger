@@ -21,7 +21,7 @@ class CustomFormatter(logging.Formatter):
             record.filename = record.file_name_override
         return super(CustomFormatter, self).format(record)
 
-def logger_init(name: str="", logdir="", level=logging.INFO):
+def logger_init(name: str=None, logdir: str=".", level=logging.INFO):
     """
     Initialize a logger with a stream handler and a file handler
     
@@ -33,7 +33,7 @@ def logger_init(name: str="", logdir="", level=logging.INFO):
     Returns:
       A logger
     """
-    if name != "":
+    if name is not None:
         logger = logging.getLogger(name)
     else:
         logger = logging.getLogger()
@@ -49,7 +49,10 @@ def logger_init(name: str="", logdir="", level=logging.INFO):
 
     if logdir is not None:
         os.makedirs(logdir, exist_ok=True)
-        savepath = os.path.join(logdir, "{}.log".format(name))
+        if name is not None:
+            savepath = os.path.join(logdir, "{}.log".format(name))
+        else:
+            savepath = os.path.join(logdir, "log")
         file_handler = logging.FileHandler(savepath)
         file_handler.setFormatter(formatter)
         logger.addHandler(file_handler)
