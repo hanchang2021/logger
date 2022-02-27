@@ -71,6 +71,6 @@ def loggit(log_args: bool=False, log_res: bool=False, log_time: bool=False):
                 logger.info(
                     "[{}][time-cost] {:.3f}s".format(function.__name__, end_time - start_time), extra=extra_args
                 )
-
+            return res
         return wrapper
     return decorator
