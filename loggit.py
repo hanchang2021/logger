@@ -38,7 +38,8 @@ def loggit(log_args: bool=False, log_res: bool=False, log_time: bool=False):
                     "[{}][time-start]".format(function.__name__), 
                     extra=extra_args
                 )
-    
+                
+            res = None
             try:
                 res = function(*args, **kwargs)
             except Exception as e:
